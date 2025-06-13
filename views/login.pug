@@ -1,0 +1,25 @@
+html
+    head
+        title Iniciar Sesión
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+        include navbar
+
+        h2 Iniciar Sesión
+
+        if error
+            p(style="color:red;") #{error}
+
+        form(method="POST" action="/login")
+            label Email:
+            input(type="email" name="email" required)
+            br
+            label Contraseña:
+            input(type="password" name="password" required)
+            br
+            button(type="submit") Entrar
+
+        p ¿No tienes cuenta?
+            a(href="/register") Regístrate aquí

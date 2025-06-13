@@ -1,17 +1,13 @@
-doctype html
-html(lang="es")
-  head
-    meta(charset="UTF-8")
-    title Artesanos.com
-    link(rel="stylesheet" href="/css/styles.css")
-    script(src="/js/main.js" defer)
-  body
-    h1 ¡Hola, Artesanos de todo el mundo!
-    p Esta es la página principal de Artesanos.com
-    //genera imput para iniciar sesion
-    imput(type="text" placeholder="Email")
-    imput(type="password" placeholder="Contraseña")
 
-    button Iniciar sesion
-    button Registrarse
-    
+html
+    head
+        title Artesanos.com - Inicio
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+        include navbar
+
+        h1 ¡Bienvenido a Artesanos.com!
+        p Esta es una red social para los artesanos de todo el mundo.
+        p Explora las obras de otros usuarios o comparte las tuyas.

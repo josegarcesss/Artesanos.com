@@ -1,0 +1,17 @@
+html
+    head
+        title Mi Perfil
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+        include navbar
+
+        h2 Bienvenido, #{user.nombre} #{user.apellido}
+        p Tu email: #{user.email}
+        p Fecha de registro: #{user.fecha_registro}
+
+        h3 Tus Datos
+        p Aquí puedes editar tu perfil, cambiar contraseña o ver tus imágenes.
+
+        a(href="/") Volver al inicio

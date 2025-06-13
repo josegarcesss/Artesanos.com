@@ -1,0 +1,15 @@
+//la barra de navegacion
+nav
+    ul
+        li
+            a(href="/") Inicio
+        if user
+            li
+                a(href="/dashboard") Mi Perfil
+            li
+                a(href="/logout") Cerrar sesión
+        else
+            li
+                a(href="/login") Iniciar Sesión
+            li
+                a(href="/register") Registrarse
