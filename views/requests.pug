@@ -1,0 +1,18 @@
+include navbar
+
+block content
+    h2 Solicitudes de Amistad
+    if requests.length == 0
+        p No tienes solicitudes pendientes.
+    else
+        ul
+            each request in requests
+                li
+                    strong #{request.nombre} #{request.apellido}
+                    form(action="/accept" method="POST")
+                        input(type="hidden" name="friendId" value=request.id_usuario)
+                        button(type="submit") Aceptar
+                    form(action="/reject" method="POST")
+                        input(type="hidden" name="friendId" value=request.id_usuario)
+                        button(type="submit") Rechazar
+    a(href="/") Volver al inicio

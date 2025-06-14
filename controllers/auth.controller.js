@@ -32,16 +32,20 @@ exports.getRegister = (req, res) => {
 exports.postRegister = (req, res) => {
     const { nombre, apellido, email, password } = req.body;
 
+    if (!nombre || !apellido || !email || !password) {
+        return res.render('register', { error: 'Todos los campos son obligatorios.' });
+    }
+
     userDB.findByEmail(email, (err, user) => {
-        if (err) return res.send('Error en la base de datos.');
+        if (err) return res.status(500).send('Error en la base de datos.');
         if (user) return res.render('register', { error: 'El correo ya está registrado.' });
 
         bcrypt.hash(password, 10, (err, hash) => {
-            if (err) return res.send('Error al encriptar la contraseña.');
+            if (err) return res.status(500).send('Error al encriptar contraseña.');
 
             const newUser = { nombre, apellido, email, password: hash };
             userDB.createUser(newUser, (err) => {
-                if (err) return res.send('Error al crear usuario.');
+                if (err) return res.status(500).send('Error al crear usuario.');
                 res.redirect('/login');
             });
         });

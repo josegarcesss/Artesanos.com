@@ -1,0 +1,11 @@
+include navbar
+
+block content
+    h2 Mis Contactos
+    if friends.length == 0
+        p No tienes contactos aún.
+    else
+        ul
+            each friend in friends
+                li #{friend.nombre} #{friend.apellido}
+    a(href="/") Volver al inicio

@@ -15,6 +15,8 @@ app.use(session);
 const authRoutes = require('./routes/auth.routes');
 app.use('/', authRoutes);
 
+const friendRoutes = require('./routes/friend.routes');
+app.use('/', friendRoutes);
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Bienvenido a Artesanos.com' });

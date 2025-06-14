@@ -1,0 +1,13 @@
+include navbar
+
+block content
+    h2 Usuarios Disponibles
+    p Selecciona un usuario para enviar una solicitud de amistad.
+    ul
+        each user in users
+            li
+                strong #{user.nombre} #{user.apellido}
+                form(action="/add" method="POST")
+                    input(type="hidden" name="friendId" value=user.id_usuario)
+                    button(type="submit") Agregar como amigo
+    a(href="/") Volver al inicio
