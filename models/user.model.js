@@ -1,8 +1,8 @@
 const db = require('./db');
 
 exports.getAllUsers = (callback) => {
-    const query = 'SELECT id_usuario, nombre, apellido FROM Usuarios';
-    db.query(query, callback);
+    const sql = 'SELECT id_usuario, nombre, apellido, imagen_perfil FROM Usuarios';
+    db.query(sql, callback);
 };
 
 /*exports.findByEmail = (email, callback) => {

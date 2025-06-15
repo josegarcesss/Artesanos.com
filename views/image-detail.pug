@@ -1,0 +1,20 @@
+html
+    head
+        title Artesanos.com - Upload
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+include navbar
+
+block content
+    .container
+        h2= image.titulo || "Imagen sin título"
+        p Autor: #{image.autor}
+
+        img(src=image.url_imagen style="width: 100%; border-radius: 8px;")
+
+        if image.descripcion
+            p(style="margin-top: 1em;") Descripción: #{image.descripcion}
+
+        a(href="/images") ← Volver a la galería

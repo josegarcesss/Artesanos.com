@@ -1,0 +1,37 @@
+html
+    head
+        title Artesanos.com - Upload
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+include navbar
+
+block content
+    .container
+        h2 Subir Nueva Imagen
+
+        if message
+            div.message= message
+
+        form(method="POST" action="/upload" enctype="multipart/form-data")
+            label Selecciona un álbum:
+            select(name="album" required)
+                each album in albums
+                    option(value=album.id_album) #{album.titulo}
+                if albums.length === 0
+                    option(disabled selected) No tienes álbumes aún
+            br
+
+            label Título:
+            input(type="text", name="title")
+
+            label Descripción:
+            textarea(name="description")
+
+            label Imagen:
+            input(type="file", name="imagen", accept="image/*", required)
+
+            button(type="submit") Subir Imagen
+
+        a(href="/") Volver al inicio

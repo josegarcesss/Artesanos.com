@@ -1,18 +1,28 @@
+html
+    head
+        title Artesanos.com - Upload
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
 include navbar
 
 block content
-    h2 Solicitudes de Amistad
-    if requests.length == 0
-        p No tienes solicitudes pendientes.
-    else
-        ul
+    .container
+        h2 Solicitudes de Amistad
+
+        if requests.length == 0
+            p No tienes solicitudes pendientes.
+        else
             each request in requests
-                li
+                .user-card
+                    img(src=request.imagen_perfil || '/default.png', alt="Perfil", style="width: 60px; height: 60px; border-radius: 50%; margin-right: 1em;")
                     strong #{request.nombre} #{request.apellido}
                     form(action="/accept" method="POST")
                         input(type="hidden" name="friendId" value=request.id_usuario)
-                        button(type="submit") Aceptar
+                        button Aceptar
                     form(action="/reject" method="POST")
                         input(type="hidden" name="friendId" value=request.id_usuario)
-                        button(type="submit") Rechazar
-    a(href="/") Volver al inicio
+                        button Rechazar
+
+        a(href="/") Volver al inicio

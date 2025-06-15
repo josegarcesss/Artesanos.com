@@ -18,6 +18,9 @@ app.use('/', authRoutes);
 const friendRoutes = require('./routes/friend.routes');
 app.use('/', friendRoutes);
 
+const albumRoutes = require('./routes/album.routes');
+app.use('/', albumRoutes);
+
 app.get('/', (req, res) => {
     res.render('index', { title: 'Bienvenido a Artesanos.com' });
 });

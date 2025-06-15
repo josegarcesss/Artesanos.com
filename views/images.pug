@@ -1,0 +1,26 @@
+html
+    head
+        title Artesanos.com - Upload
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet" href="/css/style.css")
+    body
+include navbar
+
+block content
+    .container
+        h2 Galería de Obras Públicas
+
+        if images && images.length > 0
+            .gallery
+                each image in images
+                    .image-card
+                        img(src=image.url_imagen alt=image.titulo)
+                        .image-info
+                            .image-title= image.titulo || 'Sin título'
+                            .image-author Autor: #{image.autor}
+                            a(href="/image/" + image.id_imagen) Ver detalles →
+        else
+            p No hay imágenes públicas aún.
+
+        a(href="/") Volver al inicio
