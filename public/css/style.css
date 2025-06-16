@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Segoe UI', sans-serif;
     margin: 0;
@@ -14,13 +20,16 @@ nav {
 nav ul {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1em;
     margin: 0;
     padding: 0;
 }
 
 nav li {
-    display: inline-block;
+    flex: 1 1 auto;
+    text-align: center;
 }
 
 nav a {
@@ -28,6 +37,8 @@ nav a {
     color: white;
     font-weight: bold;
     transition: color 0.3s ease;
+    padding: 0.5em 1em;
+    border-radius: 5px;
 }
 
 nav a:hover {
@@ -47,6 +58,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1em;
+    margin: 5px 0px;
 }
 
 label {
@@ -151,6 +163,9 @@ button:hover {
 }
 
 .profile-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
     border: 3px solid #ddd;
     margin-bottom: 1em;
 }

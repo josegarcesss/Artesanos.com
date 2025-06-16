@@ -1,6 +1,6 @@
 html
     head
-        title Artesanos.com - Upload
+        title Artesanos.com - Amistades
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="/css/style.css")
@@ -16,5 +16,21 @@ block content
 
         if image.descripcion
             p(style="margin-top: 1em;") Descripción: #{image.descripcion}
+
+        h3(style="margin-top: 2em;") Comentarios
+
+        if comments.length == 0
+            p No hay comentarios aún.
+        else
+            each comment in comments
+                div(style="margin-bottom: 1em;")
+                    strong #{comment.autor}:
+                    |  #{comment.texto}
+
+        form(action="/comment" method="POST")
+            input(type="hidden" name="imageId" value=image.id_imagen)
+            textarea(name="texto" placeholder="Escribe tu comentario..." required)= ''
+            br
+            button(type="submit") Enviar comentario
 
         a(href="/images") ← Volver a la galería

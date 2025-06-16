@@ -52,7 +52,7 @@ exports.acceptFriend = (req, res) => {
 
     friendDB.acceptRequest(userId, friendId, (err) => {
         if (err) return res.status(500).send('Error al aceptar solicitud.');
-        res.redirect('/friends/requests');
+        res.redirect('/requests');
     });
 };
 
@@ -64,6 +64,6 @@ exports.rejectFriend = (req, res) => {
 
     friendDB.rejectRequest(userId, friendId, (err) => {
         if (err) return res.status(500).send('Error al rechazar solicitud.');
-        res.redirect('/friends/requests');
+        res.redirect('/requests');
     });
 };

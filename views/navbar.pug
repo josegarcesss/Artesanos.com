@@ -1,11 +1,14 @@
-//la barra de navegacion
 nav
     ul
         li
-            a(href="/") Inicio
+            a(href="/images") Inicio
         if user
             li
                 a(href="/dashboard") Mi Perfil
+            li
+                a(href="/users") Otros Usuarios
+            li
+                a(href="/requests") Solicitudes
             li
                 a(href="/logout") Cerrar sesión
         else

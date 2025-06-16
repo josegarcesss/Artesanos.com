@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const upload = require('../config/multer.config');
 const albumDB = require('../models/album.model');
+const commentDB = require('../models/comment.model');
 
 exports.viewUploadForm = (req, res) => {
     if (!req.session.user) return res.redirect('/login');
@@ -61,6 +62,15 @@ exports.viewImageDetail = (req, res) => {
 
     albumDB.getImageById(imageId, (err, image) => {
         if (err) return res.status(500).send('Error al cargar imagen.');
-        res.render('image-detail', { user: req.session.user, image });
+
+        commentDB.getCommentsByImage(imageId, (err, comments) => {
+            if (err) return res.status(500).send('Error al cargar comentarios.');
+            
+            res.render('image-detail', {
+                user: req.session.user,
+                image: image,
+                comments: comments || []
+            });
+        });
     });
 };
