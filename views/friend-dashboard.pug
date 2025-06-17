@@ -1,35 +1,53 @@
+//- html
+//-   head
+//-     title Perfil de #{friend.nombre} - Dashboard
+//-     meta(charset="UTF-8")
+//-     meta(name="viewport", content="width=device-width, initial-scale=1.0")
+//-     link(rel="stylesheet", href="/css/style.css")
+//-   body(data-user-id=user.id_usuario)
+//-     include navbar
+
+//-     .container
+//-       h2 Perfil de #{friend.nombre} #{friend.apellido}
+//-       .profile-info
+//-         img(src=friend.imagen_perfil || '/default.png', alt="Imagen de perfil", style="width: 100px; height:100px; border-radius:50%;")
+//-         p Correo: #{friend.email}
+      
+//-       h3 Álbumes
+//-       if albums.length == 0
+//-         p No tiene álbumes.
+//-       else
+//-         each album in albums
+//-           .album
+//-             h4 #{album.titulo}
+//-             if album.images && album.images.length > 0
+//-               .gallery
+//-                 each img in album.images
+//-                   .image-card
+//-                     img(src=img.url_imagen, alt=img.titulo)
+//-                     p #{img.titulo}
+//-             else
+//-               p No hay imágenes visibles en este álbum.
+//-       a(href="/") Volver al inicio
+
+//-     script(src="/socket.io/socket.io.js")
+//-     script(src="/js/notifications.js")
+
+// views/friend-dashboard.pug
+doctype html
 html
   head
-    title Perfil de #{friend.nombre} - Dashboard
+    title Friend Dashboard - Próximamente
     meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/css/style.css")
-  body(data-user-id=user.id_usuario)
+  body
     include navbar
 
     .container
-      h2 Perfil de #{friend.nombre} #{friend.apellido}
-      .profile-info
-        img(src=friend.imagen_perfil || '/default.png', alt="Imagen de perfil", style="width: 100px; height:100px; border-radius:50%;")
-        p Correo: #{friend.email}
-      
-      h3 Álbumes
-      if albums.length == 0
-        p No tiene álbumes.
-      else
-        each album in albums
-          .album
-            h4 #{album.titulo}
-            if album.images && album.images.length > 0
-              .gallery
-                each img in album.images
-                  .image-card
-                    img(src=img.url_imagen, alt=img.titulo)
-                    p #{img.titulo}
-            else
-              p No hay imágenes visibles en este álbum.
-      a(href="/") Volver al inicio
+      h2 Próximamente
+      p Esta funcionalidad estará disponible muy pronto.
+      a.button(href="/dashboard") Volver al Dashboard
 
     script(src="/socket.io/socket.io.js")
     script(src="/js/notifications.js")
-

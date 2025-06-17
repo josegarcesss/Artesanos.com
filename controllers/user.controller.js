@@ -19,27 +19,35 @@ exports.viewFriendDashboard = (req, res) => {
   if (!req.session.user) {
     return res.redirect('/login');
   }
-
-  const friendId = parseInt(req.params.id, 10);
-  if (isNaN(friendId)) {
-    return res.status(400).send("ID de usuario no válido");
-  }
-
-  userDB.getUserById(friendId, (err, friend) => {
-    if (err || !friend) {
-      return res.status(404).send("Usuario no encontrado");
-    }
-
-    albumDB.getAlbumsByUser(friendId, (err, albums) => {
-      if (err) {
-        return res.status(500).send("Error al cargar los álbumes");
-      }
-
-      res.render('friend-dashboard', {
-        user: req.session.user,
-        friend: friend,
-        albums: albums
-      });
-    });
-  });
+  res.render('friend-dashboard', { user: req.session.user });
 };
+
+//FUTURA IMPLEMENTACION
+// exports.viewFriendDashboard = (req, res) => {
+//   if (!req.session.user) {
+//     return res.redirect('/login');
+//   }
+
+//   const friendId = parseInt(req.params.id, 10);
+//   if (isNaN(friendId)) {
+//     return res.status(400).send("ID de usuario no válido");
+//   }
+
+//   userDB.getUserById(friendId, (err, friend) => {
+//     if (err || !friend) {
+//       return res.status(404).send("Usuario no encontrado");
+//     }
+
+//     albumDB.getAlbumsByUser(friendId, (err, albums) => {
+//       if (err) {
+//         return res.status(500).send("Error al cargar los álbumes");
+//       }
+
+//       res.render('friend-dashboard', {
+//         user: req.session.user,
+//         friend: friend,
+//         albums: albums
+//       });
+//     });
+//   });
+// };

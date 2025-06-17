@@ -13,6 +13,15 @@ exports.findByEmail = (email, callback) => {
     });
 };
 
+exports.getUserById = (id, callback) => {
+  const sql = "SELECT * FROM usuarios WHERE id_usuario = ?";
+  db.query(sql, [id], (err, results) => {
+    if(err) return callback(err);
+    callback(null, results[0]);
+  });
+};
+
+
 
 exports.createUser = (user, callback) => {
     const { nombre, apellido, email, password } = user;
