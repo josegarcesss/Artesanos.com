@@ -1,21 +1,27 @@
+// /views/navbar.pug
 nav
-    ul
-        li
-            a(href="/images") Inicio
-        if user
-            li
-                a(href="/dashboard") Mi Perfil
-            li
-                a(href="/requests") Solicitudes
-            li
-                a(href="/notifications")
-                    | Notificaciones
-                    span#notification-count(style="margin-left: 5px; color: #ffdd57;")
-                        | (0)
-            li
-                a(href="/logout") Cerrar sesión
-        else
-            li
-                a(href="/login") Iniciar Sesión
-            li
-                a(href="/register") Registrarse
+  ul.nav-links
+    li
+      a(href="/images") Inicio
+    if user
+      li
+        a(href="/dashboard") Mi Dashboard
+      li
+        a(href="/friends") Amigos
+      li
+        a(href="/requests") Solicitudes
+      li
+        a(href="/notifications") Notificaciones
+      li
+        a(href="/logout") Cerrar sesión
+    else
+      li
+        a(href="/login") Iniciar Sesión
+      li
+        a(href="/register") Registrarse
+        
+  if user
+    .navbar-search
+      form(action="/search/users", method="GET")
+        input(type="text", name="q", placeholder="Buscar usuarios...", required)
+        button(type="submit") Buscar

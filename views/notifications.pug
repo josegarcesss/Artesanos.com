@@ -1,3 +1,4 @@
+// /views/notifications.pug
 html
   head
     title Artesanos.com - Notificaciones
@@ -17,13 +18,14 @@ html
             li.notification-item
               if notification.target_url
                 a(href=notification.target_url)
-                  strong #{notification.tipo === 'comentario' ? 'Comentario:' : 'Solicitud:'}
+                  strong 
+                    | #{notification.tipo === 'comentario' ? 'Comentario:' : 'Solicitud:'}  
                   |  #{notification.mensaje}
               else
                 | #{notification.mensaje}
               br
               small(style="color: #888;") Enviado el #{notification.fecha}
-      a(href="/") Volver al inicio
+      a(href="/images") Volver al inicio
 
     script(src="/socket.io/socket.io.js")
     script(src="/js/notifications.js")

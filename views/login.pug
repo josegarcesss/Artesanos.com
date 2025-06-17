@@ -1,25 +1,21 @@
 html
-    head
-        title Iniciar Sesión
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body
-        include navbar
-
-        h2 Iniciar Sesión
-
-        if error
-            p(style="color:red;") #{error}
-
-        form(method="POST" action="/login")
-            label Email:
-            input(type="email" name="email" required)
-            br
-            label Contraseña:
-            input(type="password" name="password" required)
-            br
-            button(type="submit") Entrar
-
-        p ¿No tienes cuenta?
-            a(href="/register") Regístrate aquí
+  head
+    title Iniciar Sesión
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    .container
+      h2 Iniciar Sesión en Artesanos.com
+      form#loginForm(action="/login", method="POST")
+        label(for="email") Correo electrónico:
+        input#email(type="email", name="email", placeholder="Ingresa tu correo")
+        br
+        label(for="password") Contraseña:
+        input#password(type="password", name="password", placeholder="Ingresa tu contraseña")
+        br
+        button(type="submit") Iniciar Sesión
+      p#errorMessage(style="color: red; display:none;")
+      p ¿No tienes cuenta?
+        a(href="/register") Regístrate aquí
+    script(src="/js/loginValidation.js")

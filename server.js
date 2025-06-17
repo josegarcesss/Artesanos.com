@@ -3,6 +3,7 @@ const app = express();
 const http = require('http').createServer(app);
 const PORT = process.env.PORT || 3000;
 const session = require('./config/session.config');
+app.use(session);
 
 app.set('view engine', 'pug');
 app.set('views', './views');
@@ -10,7 +11,6 @@ app.set('views', './views');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(session);
 
 const authRoutes = require('./routes/auth.routes');
 app.use('/', authRoutes);
@@ -27,6 +27,12 @@ app.use('/', commentRoutes);
 const notificationRoutes = require('./routes/notification.routes');
 app.use('/', notificationRoutes);
 
+const searchRoutes = require('./routes/search.routes');
+app.use('/', searchRoutes);
+
+const userRoutes = require('./routes/user.routes');
+app.use('/', userRoutes);
+
 app.get('/', (req, res) => {
     res.render('login', { title: 'Bienvenido a Artesanos.com' });
 });
@@ -37,6 +43,6 @@ initSocket(io);
 
 
 
-http.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+http.listen(process.env.PORT || 3000, () => {
+  console.log(`Servidor corriendo en http://localhost:${process.env.PORT || 3000}`);
 });

@@ -1,65 +1,71 @@
 html
-    head
-        title Artesanos.com - Upload
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body(data-user-id=user.id_usuario)
-        include navbar
+  head
+    title Artesanos.com - Upload
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    include navbar
 
-        block content
-            h2 Subir Nueva Imagen
+    block content
+      h2 Subir Nueva Imagen
 
-            if albums.length == 0
-                p No tienes álbumes. Crea uno a continuación.
-            else
-                h3 Álbumes existentes:
-                each album in albums
-                    .album-item(style="margin-bottom: 10px;")
-                        input(type="radio" name="album" value=album.id_album required)
-                        |  #{album.titulo}
-                        form(action="/album/delete" method="POST" style="display:inline;")
-                            input(type="hidden" name="albumId" value=album.id_album)
-                            button(type="submit" onclick="return confirm('¿Estás seguro de borrar este álbum?')") 🗑️
+      if albums.length == 0
+        p No tienes álbumes. Crea uno a continuación.
+      else
+        h3 Álbumes existentes:
+        each album in albums
+          .album-item(style="margin-bottom: 10px;")
+            input(type="radio" name="album" value=album.id_album required)
+            |  #{album.titulo}
+            form(action="/album/delete" method="POST" style="display:inline;")
+              input(type="hidden" name="albumId" value=album.id_album)
+              button(type="submit" onclick="return confirm('¿Estás seguro de borrar este álbum?')") 🗑️
 
-            form(method="POST" action="/upload" enctype="multipart/form-data")
-                .form-group
-                    label Selecciona o crea un álbum:
-                    select(name="album" required)
-                        option(value="" disabled selected) -- Selecciona un álbum --
-                        each album in albums
-                            option(value=album.id_album) #{album.titulo}
-                        option(value="new") ➕ Crear nuevo álbum
+      form(method="POST" action="/upload" enctype="multipart/form-data")
+        .form-group
+          label Selecciona o crea un álbum:
+          select(name="album" required)
+            option(value="" disabled selected) -- Selecciona un álbum --
+            each album in albums
+              option(value=album.id_album) #{album.titulo}
+            option(value="new") ➕ Crear nuevo álbum
 
-                .form-group
-                    input(type="text" name="newAlbumTitle" placeholder="Título del nuevo álbum" id="newAlbumInput" style="display:none;" oninput="this.setCustomValidity('')")
-                    small Solo si seleccionaste "Crear nuevo álbum"
+        .form-group
+          input(type="text" name="newAlbumTitle" placeholder="Título del nuevo álbum" id="newAlbumInput" style="display:none;" oninput="this.setCustomValidity('')")
+          small Solo si seleccionaste "Crear nuevo álbum"
 
-                .form-group
-                    label Título de la imagen:
-                    input(type="text" name="title" placeholder="Opcional")
+        .form-group
+          label Título de la imagen:
+          input(type="text" name="title" placeholder="Opcional")
 
-                .form-group
-                    label Descripción:
-                    textarea(name="description")
+        .form-group
+          label Descripción:
+          textarea(name="description")
 
-                .form-group
-                    label Imagen:
-                    input(type="file" name="imagen" accept="image/*" required)
+        .form-group
+          label Visibilidad de la imagen:
+          select(name="visibilidad", required)
+            option(value="publica") Pública
+            option(value="amigos") Solo para amigos
 
-                button(type="submit") Subir Imagen
+        .form-group
+          label Imagen:
+          input(type="file" name="imagen" accept="image/*" required)
 
-            script.
-                document.querySelector("select[name='album']").addEventListener("change", function() {
-                    var newAlbumInput = document.getElementById("newAlbumInput");
-                    if (this.value === "new") {
-                        newAlbumInput.style.display = 'block';
-                        newAlbumInput.setAttribute("required", "required");
-                    } else {
-                        newAlbumInput.style.display = 'none';
-                        newAlbumInput.removeAttribute("required");
-                        newAlbumInput.value = '';
-                    }
-                });
-script(src="/socket.io/socket.io.js")
-script(src="/js/notifications.js")
+        button(type="submit") Subir Imagen
+
+      script.
+        document.querySelector("select[name='album']").addEventListener("change", function() {
+          var newAlbumInput = document.getElementById("newAlbumInput");
+          if (this.value === "new") {
+              newAlbumInput.style.display = 'block';
+              newAlbumInput.setAttribute("required", "required");
+          } else {
+              newAlbumInput.style.display = 'none';
+              newAlbumInput.removeAttribute("required");
+              newAlbumInput.value = '';
+          }
+        });
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/notifications.js")

@@ -19,3 +19,13 @@ exports.createUser = (user, callback) => {
     const sql = 'INSERT INTO Usuarios (nombre, apellido, email, password) VALUES (?, ?, ?, ?)';
     db.query(sql, [nombre, apellido, email, password], callback);
 };
+
+exports.searchUsers = (query, callback) => {
+  const sql = `
+    SELECT id_usuario, nombre, apellido, email, imagen_perfil 
+    FROM Usuarios 
+    WHERE nombre LIKE ? OR apellido LIKE ? OR email LIKE ?
+  `;
+  const term = `%${query}%`;
+  db.query(sql, [term, term, term], callback);
+};

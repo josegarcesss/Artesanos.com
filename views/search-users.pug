@@ -1,0 +1,34 @@
+html
+  head
+    title Búsqueda de Usuarios - Artesanos.com
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body(data-user-id=user ? user.id_usuario : '')
+    include navbar
+
+    .container
+      h2 Búsqueda de Usuarios
+      form(action="/search/users", method="GET")
+        input(type="text", name="q", placeholder="Buscar usuarios...", value=query required)
+        button(type="submit") Buscar
+
+      if message
+        p(style="color: red;") #{message}
+      else if users.length > 0
+        ul
+          each u in users
+            li.user-card(style="margin-bottom: 1em; padding: 10px; border-bottom: 1px solid #ccc;")
+              img(src=u.imagen_perfil || '/public/default.png', alt="Perfil", style="width:40px; height:40px; border-radius:50%; margin-right: 10px; vertical-align: middle;")
+              strong #{u.nombre} #{u.apellido}
+              a.btn-profile(href=`/user/${u.id_usuario}`, style="margin-left: 10px; font-size: 0.9em; color: #0077cc;") Ver Perfil
+              form(action="/add", method="POST", style="display:inline; margin-left: 10px;")
+                input(type="hidden", name="friendId", value=u.id_usuario)
+                button.btn-friend(type="submit", style="font-size: 0.9em; background-color: #0077cc; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer;") Agregar como amigo
+      else
+        p No se encontraron usuarios.
+
+    a(href="/images") Volver al inicio
+
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/notifications.js")

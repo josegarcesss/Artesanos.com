@@ -5,7 +5,10 @@ exports.viewNotifications = (req, res) => {
   const userId = req.session.user.id_usuario;
 
   notificationDB.getUnreadNotifications(userId, (err, notifications) => {
-    if (err) return res.status(500).send('Error al cargar notificaciones.');
+    if (err) {
+      console.error('Error al cargar notificaciones:', err);
+      return res.status(500).send('Error al cargar notificaciones.');
+    }
 
     notificationDB.markAsRead(userId, () => {
       res.render('notifications', { user: req.session.user, notifications });

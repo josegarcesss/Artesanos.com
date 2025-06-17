@@ -9,21 +9,46 @@ exports.viewUsers = (req, res) => {
   userDB.getAllUsers((err, allUsersFromDB) => {
     if (err) return res.status(500).send('Error al cargar usuarios.');
 
-    const userId = req.session.user.id_usuario;
-    const users = allUsersFromDB.filter(u => u.id_usuario !== userId);
+    const currentUserId = req.session.user.id_usuario;
+    const users = allUsersFromDB.filter(u => u.id_usuario !== currentUserId);
 
-    res.render('users', { user: req.session.user, users });
+    friendDB.getPendingOrExistingRequests(currentUserId, (err, requests) => {
+      if (err) return res.status(500).send('Error al cargar solicitudes.');
+
+      const pendingStatus = {};
+      requests.forEach(r => {
+        if (r.usuario_id === currentUserId) {
+          pendingStatus[r.amigo_id] = true;
+        } else if (r.amigo_id === currentUserId) {
+          pendingStatus[r.usuario_id] = true;
+        }
+      });
+
+      const usersWithStatus = users.map(u => ({
+        ...u,
+        pending: !!pendingStatus[u.id_usuario]
+      }));
+
+      res.render('users', { 
+        user: req.session.user, 
+        users: usersWithStatus 
+      });
+    });
   });
 };
 
 exports.viewFriends = (req, res) => {
   if (!req.session.user) return res.redirect('/login');
 
-  friendDB.getFriends(req.session.user.id_usuario, (err, friends) => {
-    if (err) return res.status(500).send('Error al obtener contactos.');
+  const userId = req.session.user.id_usuario;
+  friendDB.getFriends(userId, (err, friends) => {
+    if (err)
+      return res.status(500).send('Error al obtener tus contactos.');
     res.render('friends', { user: req.session.user, friends });
   });
 };
+
+
 
 exports.viewRequests = (req, res) => {
   if (!req.session.user) return res.redirect('/login');

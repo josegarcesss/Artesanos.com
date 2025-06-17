@@ -1,31 +1,27 @@
 html
-    head
-        title Registrarse
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body
-        include navbar
-
-        h2 Registrarse
-
-        if error
-            p(style="color:red;") #{error}
-
-        form(method="POST" action="/register")
-            label Nombre:
-            input(type="text" name="nombre" required)
-            br
-            label Apellido:
-            input(type="text" name="apellido" required)
-            br
-            label Email:
-            input(type="email" name="email" required)
-            br
-            label Contraseña:
-            input(type="password" name="password" required)
-            br
-            button(type="submit") Registrarse
-
-        p ¿Ya tienes cuenta?
-            a(href="/login") Inicia sesión
+  head
+    title Registrarse
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    .container
+      h2 Registrarse en Artesanos.com
+      form#registerForm(action="/register", method="POST")
+        label(for="nombre") Nombre:
+        input#nombre(type="text", name="nombre", placeholder="Tu nombre")
+        br
+        label(for="apellido") Apellido:
+        input#apellido(type="text", name="apellido", placeholder="Tu apellido")
+        br
+        label(for="email") Correo:
+        input#email(type="email", name="email", placeholder="Tu correo electrónico")
+        br
+        label(for="password") Contraseña:
+        input#password(type="password", name="password", placeholder="Elige una contraseña")
+        br
+        button(type="submit") Registrarse
+      p#errorMessage(style="color: red; display:none;")
+      p ¿Ya tienes cuenta?
+        a(href="/login") Inicia sesión
+    script(src="/js/registerValidation.js")

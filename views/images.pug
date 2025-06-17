@@ -1,28 +1,58 @@
+doctype html
 html
-    head
-        title Artesanos.com - Feed Principal
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body(data-user-id=user.id_usuario)
-include navbar
+  head
+    title Artesanos.com - Feed Principal
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+    style.
+      .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .gallery .image-card {
+        position: relative;
+        overflow: hidden;
+        width: calc(33.33% - 10px);
+        aspect-ratio: 1;
+        border-radius: 8px;
+      }
+      .gallery .image-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .gallery .image-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        padding: 5px;
+        font-size: 0.9rem;
+      }
+  body
+    include navbar
 
-block content
-    .container
-        h2 Galería de Obras Públicas
-
+    block content
+      .container
+        h2 Galería de Obras
         if images && images.length > 0
-            .gallery
-                each image in images
-                    .image-card
-                        img(src=image.url_imagen alt=image.titulo)
-                        .image-info
-                            .image-title= image.titulo || 'Sin título'
-                            .image-author Autor: #{image.autor}
-                            a(href="/image/" + image.id_imagen) Ver detalles →
+          .gallery
+            each image in images
+              .image-card
+                img(src=image.url_imagen, alt=image.titulo)
+                .image-info
+                  .image-title= image.titulo || 'Sin título'
+                  .image-author
+                    | Autor: #{image.autor}
+                    if image.visibilidad == 'amigos'
+                      | (Solo amigos)
+                  a(href="/image/" + image.id_imagen) Ver detalles →
         else
-            p No hay imágenes públicas aún.
-
-        a(href="/") Volver al inicio
-script(src="/socket.io/socket.io.js")
-script(src="/js/notifications.js")
+          p No hay imágenes para mostrar.
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/notifications.js")

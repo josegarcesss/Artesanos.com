@@ -5,79 +5,95 @@ const albumDB = require('../models/album.model');
 const commentDB = require('../models/comment.model');
 
 exports.viewUploadForm = (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  albumDB.getAlbumsByUser(req.session.user.id_usuario, (err, albums) => {
+    if (err) {
+      return res.status(500).send('Error al obtener álbumes. Por favor, intenta más tarde.');
     }
-    albumDB.getAlbumsByUser(req.session.user.id_usuario, (err, albums) => {
-        if (err) {
-            return res.status(500).send('Error al obtener álbumes. Por favor, intenta más tarde.');
-        }
 
-        if (albums.length === 0) {
-            return res.render('upload', {
-                user: req.session.user,
-                albums: [],
-                message: 'No tienes álbumes. Crea uno desde tu perfil.'
-            });
-        }
+    if (albums.length === 0) {
+      return res.render('upload', {
+        user: req.session.user,
+        albums: [],
+        message: 'No tienes álbumes. Crea uno desde tu perfil.'
+      });
+    }
 
-        res.render('upload', { user: req.session.user, albums });
-    });
+    res.render('upload', { user: req.session.user, albums });
+  });
 };
 
+
+
 exports.uploadImage = (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login');
-    }
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
 
-    const userId = req.session.user.id_usuario;
-    const { album, newAlbumTitle } = req.body;
-    const imagePath = `/uploads/${req.file.filename}`;
-    const title = req.body.title || '';
-    const description = req.body.description || '';
+  const userId = req.session.user.id_usuario;
+  const { album, newAlbumTitle } = req.body;
+  const visibilidad = req.body.visibilidad || 'publica';
+  const imagePath = `/uploads/${req.file.filename}`;
+  const title = req.body.title || '';
+  const description = req.body.description || '';
 
-    if (!album || (album !== 'new' && isNaN(album))) {
+  if (!album || (album !== 'new' && isNaN(album))) {
+    return res.status(400).render('upload', {
+      user: req.session.user,
+      albums: [],
+      message: 'Debes seleccionar un álbum válido.',
+      error: 'Elige un álbum antes de continuar'
+    });
+  }
+
+  let finalAlbumId = album;
+
+  function _uploadImage(albumId) {
+    albumDB.getImageCountByAlbum(albumId, (err, count) => {
+      if (err) {
+        console.error('❌ Error al contar imágenes:', err.message);
+        return res.status(500).send('Error al comprobar imágenes.');
+      }
+      if (count >= 20) {
         return res.status(400).render('upload', {
-            user: req.session.user,
-            albums: [],
-            message: 'Debes seleccionar un álbum válido.',
-            error: 'Elige un álbum antes de continuar'
+          user: req.session.user,
+          albums: [],
+          message: 'El álbum ya tiene el máximo de 20 imágenes.'
         });
-    }
-
-    let finalAlbumId = album;
-
-    if (album === 'new') {
-        if (!newAlbumTitle) {
-            return res.status(400).render('upload', {
-                user: req.session.user,
-                albums: [],
-                message: 'Debes proporcionar un título para el nuevo álbum.',
-                error: 'El título del álbum no puede estar vacío.'
-            });
+      }
+      albumDB.uploadImage(albumId, imagePath, title, description, visibilidad, (err) => {
+        if (err) {
+          console.error('❌ Error al subir imagen:', err.message);
+          return res.status(500).send('Error al subir imagen.');
         }
+        res.redirect('/images');
+      });
+    });
+  }
 
-        albumDB.createAlbum(userId, newAlbumTitle, (err, result) => {
-            if (err) {
-                console.error('❌ Error al crear álbum:', err.message);
-                return res.status(500).send('Error al crear álbum');
-            }
-            finalAlbumId = result.insertId;
-            _uploadImage(finalAlbumId);
-        });
-    } else {
-        _uploadImage(finalAlbumId);
+  if (album === 'new') {
+    if (!newAlbumTitle) {
+      return res.status(400).render('upload', {
+        user: req.session.user,
+        albums: [],
+        message: 'Debes proporcionar un título para el nuevo álbum.',
+        error: 'El título del álbum no puede estar vacío.'
+      });
     }
 
-    function _uploadImage(albumId) {
-        albumDB.uploadImage(albumId, imagePath, title, description, (err) => {
-            if (err) {
-                console.error('❌ Error al subir imagen:', err.message);
-                return res.status(500).send('Error al subir imagen');
-            }
-            res.redirect('/images');
-        });
-    }
+    albumDB.createAlbum(userId, newAlbumTitle, (err, result) => {
+      if (err) {
+        console.error('❌ Error al crear álbum:', err.message);
+        return res.status(500).send('Error al crear álbum');
+      }
+      finalAlbumId = result.insertId;
+      _uploadImage(finalAlbumId);
+    });
+  } else {
+    _uploadImage(finalAlbumId);
+  }
 };
 
 exports.deleteAlbum = function(req, res) {
@@ -139,4 +155,16 @@ exports.viewImageDetail = (req, res) => {
             });
         });
     });
+};
+
+exports.listImages = (req, res) => {
+  const currentUserId = req.session.user ? req.session.user.id_usuario : null;
+  
+  albumDB.getVisibleImages(currentUserId, (err, images) => {
+    if (err) {
+      console.error('❌ Error al cargar imágenes:', err.message);
+      return res.status(500).send('Error al cargar imágenes.');
+    }
+    res.render('images', { user: req.session.user, images });
+  });
 };

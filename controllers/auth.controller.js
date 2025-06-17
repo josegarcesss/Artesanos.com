@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const userDB = require('../models/user.model');
+const albumDB = require('../models/album.model');
 
 exports.getLogin = (req, res) => {
     res.render('login', { error: req.session.error });
@@ -87,12 +88,29 @@ exports.postRegister = (req, res) => {
 };
 
 exports.getDashboard = (req, res) => {
-    if (!req.session.user) {
-        req.session.error = 'Por favor, inicia sesión para acceder al panel.';
-        return res.redirect('/login');
+  if (!req.session.user) {
+    console.log("No hay usuario en la sesión");
+    req.session.error = 'Por favor, inicia sesión para acceder al panel.';
+    return res.redirect('/login');
+  }
+
+  console.log("Usuario en sesión:", req.session.user);
+  const userId = req.session.user.id_usuario;
+  console.log("Buscando álbumes para el usuario id:", userId);
+
+  albumDB.getAlbumsByUser(userId, (err, albums) => {
+    if (err) {
+      console.error("Error al cargar álbumes:", err);
+      return res.status(500).send("Error al cargar tu dashboard.");
     }
-    res.render('dashboard', { user: req.session.user });
+    res.render('dashboard', {
+      user: req.session.user,
+      albums: albums
+    });
+  });
 };
+
+
 
 
 

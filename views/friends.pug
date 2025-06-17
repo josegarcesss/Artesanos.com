@@ -1,22 +1,26 @@
 html
-    head
-        title Artesanos.com - Amistades
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body(data-user-id=user.id_usuario)
-include navbar
+  head
+    title Artesanos.com - Mis Contactos
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body(data-user-id=user.id_usuario)
+    include navbar
 
-block content
     .container
-        h2 Mis Contactos
+      h2 Mis Contactos
+      if friends.length == 0
+        p No tienes contactos aún.
+      else
+        ul
+          each friend in friends
+            li.user-card(style="margin-bottom: 1em; padding: 10px; border-bottom: 1px solid #ccc;")
+              img(src=friend.imagen_perfil || '/default.png', alt="Perfil", style="width:60px; height:60px; border-radius:50%; margin-right: 10px; vertical-align: middle;")
+              strong #{friend.nombre} #{friend.apellido}
+              // Enlace para acceder al dashboard de ese amigo (solo lectura)
+              a.btn-profile(href=`/user/${friend.id_usuario}/dashboard`, style="margin-left: 10px; font-size: 0.9em; color: #0077cc;") Ver Dashboard
+      a(href="/images") Volver al inicio
 
-        if friends.length == 0
-            p No tienes contactos aún.
-        else
-            each friend in friends
-                .user-card
-                    img(src=friend.imagen_perfil || '/default.png', alt="Perfil", style="width: 60px; height: 60px; border-radius: 50%; margin-right: 1em;")
-                    strong #{friend.nombre} #{friend.apellido}
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/notifications.js")
 
-        a(href="/") Volver al inicio
