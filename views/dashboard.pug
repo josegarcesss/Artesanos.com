@@ -1,23 +1,28 @@
 html
     head
-        title Artesanos.com - Upload
+        title Artesanos.com - Dashboard
         meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/style.css")
     body
-include navbar
+        include navbar
 
-block content
-    .container
-        h2 Bienvenido, #{user.nombre} #{user.apellido}
+        block content
+            .container
+                h2 Bienvenido, #{user.nombre} #{user.apellido}
 
-        .profile-info
-            img(src=user.imagen_perfil || '/default.png', alt="Perfil", style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1em;")
-            p
-                strong Email:
-                | #{user.email}
-            p
-                strong Fecha de registro:
-                | #{user.fecha_registro}
-            p
-                a(href="/") Volver al inicio
+                .profile-info
+                    img(src=user.imagen_perfil || '/default.png', alt="Perfil", style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1em;")
+                    p
+                        strong Email:
+                        | #{user.email}
+                    p
+                        strong Fecha de registro:
+                        | #{user.fecha_registro}
+
+                if user
+                    .upload-button
+                        a(href="/upload") 
+                            button Subir nuevas imágenes
+                else
+                    p Debes iniciar sesión para subir imágenes.

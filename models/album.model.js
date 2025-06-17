@@ -10,6 +10,17 @@ exports.getAlbumsByUser = (userId, callback) => {
     db.query(sql, [userId], callback);
 };
 
+exports.getAlbumById = function(albumId, callback) {
+    db.query(
+        'SELECT * FROM Albumes WHERE id_album = ?',
+        [albumId],
+        function(err, results) {
+            if (err) return callback(err);
+            callback(null, results[0]);
+        }
+    );
+};
+
 exports.uploadImage = (albumId, imagePath, title, description, callback) => {
     const sql = 'INSERT INTO Imagenes (album_id, url_imagen, titulo, descripcion) VALUES (?, ?, ?, ?)';
     db.query(sql, [albumId, imagePath, title || null, description || null], callback);
@@ -38,4 +49,20 @@ exports.getImageById = (imageId, callback) => {
         if (err) return callback(err);
         callback(null, results[0]);
     });
+};
+
+exports.deleteAlbum = function(albumId, callback) {
+    db.query(
+        'DELETE FROM Albumes WHERE id_album = ?',
+        [albumId],
+        callback
+    );
+};
+
+exports.deleteImage = function(imageId, callback) {
+    db.query(
+        'DELETE FROM Imagenes WHERE id_imagen = ?',
+        [imageId],
+        callback
+    );
 };

@@ -5,32 +5,32 @@ html
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="/css/style.css")
     body
-include navbar
+        include navbar
 
-block content
-    .container
-        h2= image.titulo || "Imagen sin título"
-        p Autor: #{image.autor}
+        block content
+            h2 #{image.titulo}
+            img(src=image.url_imagen style="max-width: 600px;")
+            p #{image.descripcion}
+            p Autor: #{image.autor}
 
-        img(src=image.url_imagen style="width: 100%; border-radius: 8px;")
+            h3 Comentarios
+            if comments.length == 0
+                p Aún no hay comentarios.
+            else
+                ul
+                    each comment in comments
+                        li
+                            strong #{comment.nombre}: 
+                            span #{comment.texto}
 
-        if image.descripcion
-            p(style="margin-top: 1em;") Descripción: #{image.descripcion}
+            form(method="POST" action="/comment")
+                input(type="hidden" name="imageId" value=image.id_imagen)
+                label Tu comentario:
+                textarea(name="text" required)
+                br
+                button(type="submit") Comentar
 
-        h3(style="margin-top: 2em;") Comentarios
-
-        if comments.length == 0
-            p No hay comentarios aún.
-        else
-            each comment in comments
-                div(style="margin-bottom: 1em;")
-                    strong #{comment.autor}:
-                    |  #{comment.texto}
-
-        form(action="/comment" method="POST")
-            input(type="hidden" name="imageId" value=image.id_imagen)
-            textarea(name="texto" placeholder="Escribe tu comentario..." required)= ''
-            br
-            button(type="submit") Enviar comentario
-
-        a(href="/images") ← Volver a la galería
+            if user.id_usuario == image.usuario_id
+                form(action="/image/delete" method="POST" style="margin-top: 20px;")
+                    input(type="hidden" name="imageId" value=image.id_imagen)
+                    button(type="submit" onclick="return confirm('¿Estás seguro de borrar esta imagen?')") 🗑️ Borrar imagen

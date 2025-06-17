@@ -4,5 +4,9 @@ module.exports = session({
     secret: process.env.SESSION_SECRET || 'codigo_secreto',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 600000 }
+    cookie: {
+        maxAge: 600000,
+        secure: false,
+        httpOnly: true
+    }
 });

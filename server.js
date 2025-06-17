@@ -25,9 +25,11 @@ const commentRoutes = require('./routes/comment.routes');
 app.use('/', commentRoutes);
 
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Bienvenido a Artesanos.com' });
+    res.render('login', { title: 'Bienvenido a Artesanos.com' });
 });
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+
