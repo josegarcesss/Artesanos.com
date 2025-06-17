@@ -191,3 +191,20 @@ button:hover {
 .upload-button button:hover {
     background-color: #555;
 }
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.toast {
+  background-color: #0077cc;
+  color: #fff;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}

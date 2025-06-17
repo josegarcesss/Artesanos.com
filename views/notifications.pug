@@ -1,0 +1,29 @@
+html
+  head
+    title Artesanos.com - Notificaciones
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet", href="/css/style.css")
+  body(data-user-id=user.id_usuario)
+    include navbar
+
+    .container
+      h2 Tus Notificaciones
+      if notifications.length == 0
+        p No tienes notificaciones nuevas.
+      else
+        ul
+          each notification in notifications
+            li.notification-item
+              if notification.target_url
+                a(href=notification.target_url)
+                  strong #{notification.tipo === 'comentario' ? 'Comentario:' : 'Solicitud:'}
+                  |  #{notification.mensaje}
+              else
+                | #{notification.mensaje}
+              br
+              small(style="color: #888;") Enviado el #{notification.fecha}
+      a(href="/") Volver al inicio
+
+    script(src="/socket.io/socket.io.js")
+    script(src="/js/notifications.js")

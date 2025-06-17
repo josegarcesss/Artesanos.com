@@ -6,9 +6,12 @@ nav
             li
                 a(href="/dashboard") Mi Perfil
             li
-                a(href="/users") Otros Usuarios
-            li
                 a(href="/requests") Solicitudes
+            li
+                a(href="/notifications")
+                    | Notificaciones
+                    span#notification-count(style="margin-left: 5px; color: #ffdd57;")
+                        | (0)
             li
                 a(href="/logout") Cerrar sesión
         else

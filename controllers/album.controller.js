@@ -129,7 +129,9 @@ exports.viewImageDetail = (req, res) => {
 
         commentDB.getCommentsByImage(imageId, (err, comments) => {
             if (err) return res.status(500).send('Error al cargar comentarios.');
-            
+
+            console.log('Comentarios cargados:', comments); 
+
             res.render('image-detail', {
                 user: req.session.user,
                 image: image,

@@ -1,36 +1,43 @@
 html
     head
-        title Artesanos.com - Amistades
+        title Artesanos.com - Dashboard
         meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet" href="/css/style.css")
-    body
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/css/style.css")
+    body(data-user-id=user.id_usuario)
         include navbar
 
         block content
-            h2 #{image.titulo}
-            img(src=image.url_imagen style="max-width: 600px;")
-            p #{image.descripcion}
-            p Autor: #{image.autor}
+            .container
+                h2= image.titulo || "Imagen sin título"
+                p Autor: #{image.autor}
+                img(src=image.url_imagen style="width: 100%; border-radius: 8px;")
+                
+                if image.descripcion
+                    p(style="margin-top: 1em;") Descripción: #{image.descripcion}
 
-            h3 Comentarios
-            if comments.length == 0
-                p Aún no hay comentarios.
-            else
-                ul
-                    each comment in comments
-                        li
-                            strong #{comment.nombre}: 
-                            span #{comment.texto}
+                h3(style="margin-top: 2em;") Comentarios
+                if comments.length == 0
+                    p Aún no hay comentarios.
+                else
+                    ul
+                        each comment in comments
+                            li
+                                strong #{comment.autor}:
+                                |  #{comment.texto}
+                                br
+                                small(style="color: #888;") #{new Date(comment.fecha).toLocaleString()}
 
-            form(method="POST" action="/comment")
-                input(type="hidden" name="imageId" value=image.id_imagen)
-                label Tu comentario:
-                textarea(name="text" required)
-                br
-                button(type="submit") Comentar
-
-            if user.id_usuario == image.usuario_id
-                form(action="/image/delete" method="POST" style="margin-top: 20px;")
+                form(action="/comment" method="POST")
                     input(type="hidden" name="imageId" value=image.id_imagen)
-                    button(type="submit" onclick="return confirm('¿Estás seguro de borrar esta imagen?')") 🗑️ Borrar imagen
+                    textarea(name="texto" placeholder="Escribe tu comentario..." required= '')
+                    br
+                    button(type="submit") Comentar
+
+                if user && user.id_usuario == image.usuario_id
+                    form(action="/image/delete" method="POST" style="margin-top: 20px;")
+                        input(type="hidden" name="imageId" value=image.id_imagen)
+                        button(type="submit" onclick="return confirm('¿Estás seguro de borrar esta imagen?')") 🗑️ Borrar imagen
+
+            script(src="/socket.io/socket.io.js")
+            script(src="/js/notifications.js")

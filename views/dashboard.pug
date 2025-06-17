@@ -4,7 +4,7 @@ html
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet", href="/css/style.css")
-    body
+    body(data-user-id=user.id_usuario)
         include navbar
 
         block content
@@ -26,3 +26,5 @@ html
                             button Subir nuevas imágenes
                 else
                     p Debes iniciar sesión para subir imágenes.
+            script(src="/socket.io/socket.io.js")
+            script(src="/js/notifications.js")

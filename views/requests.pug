@@ -7,7 +7,7 @@ html
     body
 include navbar
 
-block content
+block content(data-user-id=user.id_usuario)
     .container
         h2 Solicitudes de Amistad
 
@@ -26,3 +26,5 @@ block content
                         button Rechazar
 
         a(href="/") Volver al inicio
+        script(src="/socket.io/socket.io.js")
+        script(src="/js/notifications.js")

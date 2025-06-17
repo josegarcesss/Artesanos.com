@@ -1,10 +1,10 @@
 html
     head
-        title Artesanos.com - Upload
+        title Artesanos.com - Feed Principal
         meta(charset="UTF-8")
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
         link(rel="stylesheet" href="/css/style.css")
-    body
+    body(data-user-id=user.id_usuario)
 include navbar
 
 block content
@@ -24,3 +24,5 @@ block content
             p No hay imágenes públicas aún.
 
         a(href="/") Volver al inicio
+script(src="/socket.io/socket.io.js")
+script(src="/js/notifications.js")

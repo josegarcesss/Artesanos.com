@@ -5,13 +5,6 @@ exports.getAllUsers = (callback) => {
     db.query(sql, callback);
 };
 
-/*exports.findByEmail = (email, callback) => {
-    db.query('SELECT * FROM Usuarios WHERE email = ?', [email], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results[0]);
-    });
-};*/
-
 exports.findByEmail = (email, callback) => {
     const sql = 'SELECT * FROM Usuarios WHERE email = ?';
     db.query(sql, [email], (err, results) => {
